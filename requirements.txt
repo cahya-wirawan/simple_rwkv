@@ -13,3 +13,4 @@ aiorwlock
 ray[default]
 ray[serve]
 gpustat==1.0.0
+kubernetes
