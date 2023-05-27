@@ -79,7 +79,7 @@ class _RWKV():
     async def __call__(self, request: Request):
         raise NotImplementedError()
     
-@serve.deployment(ray_actor_options={"num_cpus": 16, "num_gpus": 0})
+@serve.deployment(ray_actor_options={"num_cpus": 8, "num_gpus": 0})
 class RWKVGenerate(_RWKV):
     @serve.batch(max_batch_size=128)
     async def handle_batch(self, input):
@@ -100,7 +100,7 @@ class RWKVGenerate(_RWKV):
 
 
 
-@serve.deployment(ray_actor_options={"num_cpus": 16, "num_gpus": 0})
+@serve.deployment(ray_actor_options={"num_cpus": 8, "num_gpus": 0})
 class RWKVInfer(_RWKV):
     @serve.batch(max_batch_size=16, batch_wait_timeout_s=0.1)
     async def handle_batch(self, input):
