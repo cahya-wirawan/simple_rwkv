@@ -10,3 +10,6 @@ torch==2.0.0
 transformers==4.27.3
 git+https://github.com/Nintorac/ChatRWKV.git@parallel#subdirectory=rwkv_pip_package 
 aiorwlock
+ray[default]
+ray[serve]
+gpustat==1.0.0
