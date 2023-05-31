@@ -39,6 +39,6 @@ ENV PATH=${PATH}:/home/user/.local/bin
 
 # Publish port
 EXPOSE 50051:50051
-
+RUN pip install .
 # Enjoy
 ENTRYPOINT ["python3", "-m", "simple_rwkv"]
