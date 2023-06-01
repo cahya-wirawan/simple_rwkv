@@ -75,7 +75,7 @@ class RWKVCompare(unittest.TestCase):
         cls.pipeline = pipeline
         cls.args = args
 
-        cls.ray_model, cls.ray_pipe = lib_raven.get_model(ray=True)
+        cls.ray_model, cls.ray_pipe = lib_raven.get_model(use_ray=True)
 
         pipeline.igenerate('hello, how are you?')
     

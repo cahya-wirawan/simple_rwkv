@@ -16,6 +16,8 @@ from simple_ai.api.grpc.embedding.server import (
     llm_embed_pb2_grpc,
 )
 
+logger = logging.getLogger(__file__)
+
 
 def serve(
     address="[::]:50051",
@@ -24,6 +26,8 @@ def serve(
     completion_servicer=None,
     max_workers=10,
 ):
+    
+    logger.info(f"Starting server at {address}")
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=max_workers))
     llm_chat_pb2_grpc.add_LanguageModelServicer_to_server(chat_servicer, server)
     llm_embed_pb2_grpc.add_LanguageModelServicer_to_server(embedding_servicer, server)
@@ -31,7 +35,6 @@ def serve(
     server.add_insecure_port(address=address)
     server.start()
     server.wait_for_termination()
-
 
 if __name__ == "__main__":
     import argparse
@@ -44,9 +47,9 @@ if __name__ == "__main__":
 
     logging.info(f"Starting gRPC server on {args.address}")
     model = Model()
-    chat_servicer = ChatServicer(model=Model())
-    embedding_servicer = EmbeddingServicer(model=Model())
-    completion_servicer = CompletionServicer(model=Model())
+    chat_servicer = ChatServicer(model=model)
+    embedding_servicer = EmbeddingServicer(model=model)
+    completion_servicer = CompletionServicer(model=model)
     serve(
         address=args.address,
         chat_servicer=chat_servicer,

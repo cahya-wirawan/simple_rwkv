@@ -1,0 +1,7 @@
+[raven]
+    [raven.metadata]
+        owned_by    = 'BlinkDL'
+        permission  = []
+        description = 'RWKV fine tuned for instruction answering'
+    [raven.network]
+        url = 'raven-rwkv-service-backend:50051'

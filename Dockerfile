@@ -30,7 +30,11 @@ RUN pip install -r requirements.txt
 
 
 # Copy rest
-COPY . .
+COPY simple_rwkv simple_rwkv
+COPY simple_rwkv simple_rwkv
+COPY obsidian_serve.py .
+copy logging.conf .
+copy pyproject.toml .
 
 # Download model
 RUN python -m simple_rwkv.get_models
@@ -41,4 +45,3 @@ ENV PATH=${PATH}:/home/user/.local/bin
 EXPOSE 50051:50051
 RUN pip install .
 # Enjoy
-ENTRYPOINT ["python3", "-m", "simple_rwkv"]

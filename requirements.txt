@@ -4,7 +4,7 @@ ninja==1.11.1
 pynvml==11.5.0
 scipy==1.10.1
 sentencepiece==0.1.97
-simple-ai-server==0.2.0
+simple-ai-server==0.2.1
 tokenizers==0.13.2
 torch==2.0.0
 transformers==4.27.3

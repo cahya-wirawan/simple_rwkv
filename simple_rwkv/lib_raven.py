@@ -1,4 +1,5 @@
 import logging
+import ray
 from typing import List
 
 from simple_rwkv.get_models import MODEL, TOKENIZER_PATH, get_model_path
@@ -21,11 +22,12 @@ logger = logging.getLogger(__file__)
 ctx_limit = 4096
 
 
-def get_model(ray=False):
+def get_model(use_ray=False):
     model_path = get_model_path(MODEL)
 
-    if ray:
+    if use_ray:
         from simple_rwkv import ray_model
+        ray.init() 
         model = ray_model.RayRWKV()
     else:
         model = RWKV(model=model_path, strategy=STRATEGY)  # stream mode w/some static
