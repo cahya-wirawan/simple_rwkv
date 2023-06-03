@@ -24,8 +24,8 @@ logger = logging.getLogger(__file__)
 
 class _RWKV():
 
-    def __init__(self):
-        self.model, self.pipeline = get_model()
+    def __init__(self, cfg):
+        self.model, self.pipeline = get_model(cfg)
 
     def _handle_batch(self, input):
         logger.debug('Starting _handle_batch')

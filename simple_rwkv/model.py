@@ -24,12 +24,13 @@ def format_chat_log(chat: list[dict[str, str]] = dict()) -> str:
     return raw_chat_text + "Alice:"
 
 
-@dataclass(unsafe_hash=True)
 class RavenRWKVModel(LanguageModel):
-    gpu_id: int = 0
-    device = torch.device("cuda", gpu_id) if torch.cuda.is_available() else torch.device("cpu")
-    model, pipeline = lib_raven.get_model(use_ray=True)
-    # model, pipeline = lib_raven.get_model(ray=False)
+
+    def __init__(self, cfg):
+
+        self.device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
+        self.model, self.pipeline = lib_raven.get_model(cfg)
+
     
 
     def chat(

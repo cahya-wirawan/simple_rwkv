@@ -22,10 +22,10 @@ logger = logging.getLogger(__file__)
 ctx_limit = 4096
 
 
-def get_model(use_ray=False):
-    model_path = get_model_path(MODEL)
+def get_model(cfg):
+    model_path = get_model_path(cfg)
 
-    if use_ray:
+    if cfg.use_ray:
         from simple_rwkv import ray_model
         ray.init() 
         model = ray_model.RayRWKV()
@@ -35,31 +35,6 @@ def get_model(use_ray=False):
     pipeline = PIPELINE(model, str(TOKENIZER_PATH))
 
     return model, pipeline
-
-
-def generate_prompt(instruction, prompt=None):
-    if prompt:
-        return f"""Below is an instruction that describes a task, paired with an input"\
-        " that provides further context. Write a response that appropriately completes the request.
-
-# Instruction:
-{instruction}
-
-# Input:
-{prompt}
-
-# Response:
-"""
-    else:
-        return f"""Below is an instruction that describes a task. Write a response that "\
-                    "appropriately completes the request.
-
-# Instruction:
-{instruction}
-
-# Response:
-"""
-
 
 def complete(
     instruction,
