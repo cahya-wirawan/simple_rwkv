@@ -26,7 +26,7 @@ ctx_limit = 4096
 
 
 def get_model(cfg):
-    if Path(cfg.model.model_path).exists():
+    if Path(cfg.model.title).exists():
         model_path = Path(cfg.model.title)
     else:
         model_path = get_model_path(cfg)
