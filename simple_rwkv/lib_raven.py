@@ -1,6 +1,7 @@
 import logging
 import ray
 from typing import List
+from pathlib import Path
 
 from simple_rwkv.get_models import MODEL, TOKENIZER_PATH, get_model_path
 
@@ -13,9 +14,11 @@ STRATEGIES = {
     "streaming": "cuda fp16i8 *40+ -> cpu fp32 *1",  # Quite slow, take ~3gb VRAM
     "fp16i8": "cuda fp16i8 *40 -> cpu fp32 *1",  # fits the 14b on a T4, quite fast
     "cpu": "cpu fp32 *1",  # requires a lot of RAM
+    "gpu-fp16": "cuda fp16",
+    "gpu-fp32": "cuda fp32",
 }
 
-STRATEGY = STRATEGIES["cpu"]
+STRATEGY = STRATEGIES["gpu-fp32"]
 
 logger = logging.getLogger(__file__)
 
@@ -23,7 +26,10 @@ ctx_limit = 4096
 
 
 def get_model(cfg):
-    model_path = get_model_path(cfg)
+    if Path(cfg.model.model_path).exists():
+        model_path = Path(cfg.model.title)
+    else:
+        model_path = get_model_path(cfg)
 
     if cfg.use_ray:
         from simple_rwkv import ray_model
@@ -32,7 +38,10 @@ def get_model(cfg):
     else:
         model = RWKV(model=model_path, strategy=STRATEGY)  # stream mode w/some static
 
-    pipeline = PIPELINE(model, str(TOKENIZER_PATH))
+    if cfg.model.world:
+        pipeline = PIPELINE(model, "rwkv_vocab_v20230424")
+    else:
+        pipeline = PIPELINE(model, str(TOKENIZER_PATH))
 
     return model, pipeline
 
